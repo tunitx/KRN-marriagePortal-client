@@ -120,7 +120,7 @@ function MultiStepForm() {
       image2: null,
       phoneNumber1: "",
     },
-validationSchema : Yup.object({
+    validationSchema: Yup.object({
       gender: Yup.string().required("Gender is required"),
       fullName: Yup.string().required("Full name is required"),
       caste: Yup.string().required("Caste is required"),
@@ -155,14 +155,9 @@ validationSchema : Yup.object({
       for (const key in values) {
         formData.append(key, values[key]);
       }
-      // console.log(formData);
       for (let pair of formData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
-      console.log("Country: ", formData.get("country"));
-      console.log("State: ", formData.get("state"));
-      console.log("City: ", formData.get("city"));
-
       try {
         const response = await fetch(
           "http://localhost:3000/postMarriageDetails",
@@ -178,7 +173,7 @@ validationSchema : Yup.object({
       }
     },
   });
-  
+
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);
   };
@@ -203,8 +198,8 @@ validationSchema : Yup.object({
             <option value="female">Female</option>
           </select>
           {formik.errors.gender && formik.touched.gender && (
-          <div>{formik.errors.gender}</div>
-        )}
+            <div>{formik.errors.gender}</div>
+          )}
         </div>
       )}
       {step === 2 && (
@@ -218,8 +213,8 @@ validationSchema : Yup.object({
             value={formik.values.fullName}
           />
           {formik.errors.fullName && formik.touched.fullName && (
-          <div>{formik.errors.fullName}</div>
-        )}
+            <div>{formik.errors.fullName}</div>
+          )}
 
           {step === 2 && (
             <div>
@@ -297,8 +292,8 @@ validationSchema : Yup.object({
             value={formik.values.dob}
           />
           {formik.errors.dob && formik.touched.dob && (
-          <div>{formik.errors.dob}</div>
-        )}
+            <div>{formik.errors.dob}</div>
+          )}
           <label htmlFor="manglik">Manglik:</label>
           <div>
             <input
@@ -309,7 +304,7 @@ validationSchema : Yup.object({
               onChange={formik.handleChange}
               checked={formik.values.manglik === "yes"}
             />
-            
+
             <label htmlFor="manglik-yes">Yes</label>
           </div>
           <div>
@@ -557,7 +552,7 @@ validationSchema : Yup.object({
             <option value="5-10 lakhs">5-10 Lakhs</option>
             <option value="more than 10 lakhs">More than 10 Lakhs</option>
           </select>
-          
+
           <label htmlFor="maritalStatus">Marital Status:</label>
           <div>
             <input
