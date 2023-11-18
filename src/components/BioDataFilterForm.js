@@ -137,6 +137,7 @@ function MultiStepFilterForm() {
                         value={gotra}
                     >
                         <option value="">Select gotra</option>
+                        <option value="none">None</option>
                         {gotras.map((g) => (
                             <option key={g} value={g}>
                                 {g}
@@ -172,6 +173,7 @@ function MultiStepFilterForm() {
                         value={height}
                     >
                         <option value="">Select height</option>
+
                         {heights.map((h) => (
                             <option key={h} value={h}>
                                 {h}
@@ -186,8 +188,8 @@ function MultiStepFilterForm() {
                         type="number"
                         onChange={formik.handleChange}
                         value={formik.values.age}
-                        ></input>
-                        
+                    ></input>
+
                 </div>
             )}
 
