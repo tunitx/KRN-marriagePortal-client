@@ -29,7 +29,8 @@ function MultiStepFilterForm() {
             subcaste: subcaste,
             gotra: gotra,
             manglik: "",
-            height: height
+            height: height,
+            age: "",
         },
 
         onSubmit: async (values) => {
@@ -177,6 +178,16 @@ function MultiStepFilterForm() {
                             </option>
                         ))}
                     </select>
+
+                    <label htmlFor="age">Age</label>
+                    <input
+                        id="age"
+                        name="age"
+                        type="number"
+                        onChange={formik.handleChange}
+                        value={formik.values.age}
+                        ></input>
+                        
                 </div>
             )}
 
