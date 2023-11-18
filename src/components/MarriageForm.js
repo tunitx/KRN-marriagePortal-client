@@ -17,22 +17,22 @@ const config = {
 };
 
 
-// async function getNewToken() {
-//   const headers = {
-//     'api-token': 'WDfLEWHKHUf-cJUb8AEvPyLdLjT-ne-XckChlv60yyNq5Y4RfIlxMpBPRh3QFnFYotU',
-//     'user-email': 'imta819@gmail.com',
-//     'Accept': 'application/json',
-//   };
+async function getNewToken() {
+  const headers = {
+    'api-token': 'WDfLEWHKHUf-cJUb8AEvPyLdLjT-ne-XckChlv60yyNq5Y4RfIlxMpBPRh3QFnFYotU',
+    'user-email': 'imta819@gmail.com',
+    'Accept': 'application/json',
+  };
 
-//   try {
-//     const response = await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', { headers });
-//     config.headers.Authorization = `Bearer ${response.data.auth_token}`;
-//   } catch (error) {
-//     console.error('Failed to get new token:', error);
-//   }
-// }
+  try {
+    const response = await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', { headers });
+    config.headers.Authorization = `Bearer ${response.data.auth_token}`;
+  } catch (error) {
+    console.error('Failed to get new token:', error);
+  }
+}
 
-// setInterval(getNewToken, 20 * 60 * 60 * 1000);
+setInterval(getNewToken, 20 * 60 * 60 * 1000);
 
 function MultiStepForm() {
   const [step, setStep] = useState(1);
