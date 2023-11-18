@@ -4,479 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import bioData from '../utils/biodata';
 import indiaStates from '../utils/indiaStates';
-const data = {
-  "Andhra Pradesh": [
-    "Anantapur",
-    "Chittoor",
-    "East Godavari",
-    "Guntur",
-    "Krishna",
-  ],
-  "Arunachal Pradesh": [
-    "Tawang",
-    "West Kameng",
-    "East Kameng",
-    "Papum Pare",
-    "Kurung Kumey",
-  ],
-  Bihar: [
-    "Araria",
-    "Arwal",
-    "Aurangabad",
-    "Banka",
-    "Begusarai",
-    "Bhagalpur",
-    "Bhojpur",
-    "Buxar",
-    "Darbhanga",
-    "East Champaran (Motihari)",
-    "Gaya",
-    "Gopalganj",
-    "Jamui",
-    "Jehanabad",
-    "Kaimur (Bhabua)",
-    "Katihar",
-    "Khagaria",
-    "Kishanganj",
-    "Lakhisarai",
-    "Madhepura",
-    "Madhubani",
-    "Munger (Monghyr)",
-    "Muzaffarpur",
-    "Nalanda",
-    "Nawada",
-    "Patna",
-    "Purnia (Purnea)",
-    "Rohtas",
-    "Saharsa",
-    "Samastipur",
-    "Saran",
-    "Sheikhpura",
-    "Sheohar",
-    "Sitamarhi",
-    "Siwan",
-    "Supaul",
-    "Vaishali",
-    "West Champaran",
-  ],
-  Chhattisgarh: [
-    "Balod",
-    "Baloda Bazar",
-    "Balrampur",
-    "Bastar",
-    "Bemetara",
-    "Bijapur",
-    "Bilaspur",
-    "Dantewada (South Bastar)",
-    "Dhamtari",
-    "Durg",
-    "Gariyaband",
-    "Janjgir-Champa",
-    "Jashpur",
-    "Kabirdham (Kawardha)",
-    "Kanker (North Bastar)",
-    "Kondagaon",
-    "Korba",
-    "Korea (Koriya)",
-    "Mahasamund",
-    "Mungeli",
-    "Narayanpur",
-    "Raigarh",
-    "Raipur",
-    "Rajnandgaon",
-    "Sukma",
-    "Surajpur",
-    "Surguja",
-  ],
-  Goa: ["North Goa", "South Goa"],
-  Gujarat: [
-    "Ahmedabad",
-    "Amreli",
-    "Anand",
-    "Aravalli",
-    "Banaskantha (Palanpur)",
-    "Bharuch",
-    "Bhavnagar",
-    "Botad",
-    "Chhota Udepur",
-    "Dahod",
-    "Dangs (Ahwa)",
-    "Devbhoomi Dwarka",
-    "Gandhinagar",
-    "Gir Somnath",
-    "Jamnagar",
-    "Junagadh",
-    "Kheda (Nadiad)",
-    "Kutch",
-    "Mahisagar",
-    "Mehsana",
-    "Morbi",
-    "Narmada (Rajpipla)",
-    "Navsari",
-    "Panchmahal (Godhra)",
-    "Patan",
-    "Porbandar",
-    "Rajkot",
-    "Sabarkantha (Himmatnagar)",
-    "Surat",
-    "Surendranagar",
-    "Tapi (Vyara)",
-    "Vadodara",
-    "Valsad",
-  ],
-  Haryana: [
-    "Ambala",
-    "Bhiwani",
-    "Charkhi Dadri",
-    "Faridabad",
-    "Fatehabad",
-    "Gurugram",
-    "Hisar",
-    "Jhajjar",
-    "Jind",
-    "Kaithal",
-    "Karnal",
-    "Kurukshetra",
-    "Mahendragarh",
-    "Nuh",
-    "Palwal",
-    "Panchkula",
-    "Panipat",
-    "Rewari",
-    "Rohtak",
-    "Sirsa",
-    "Sonipat",
-    "Yamunanagar",
-  ],
-  "Himachal Pradesh": [
-    "Bilaspur",
-    "Chamba",
-    "Hamirpur",
-    "Kangra",
-    "Kinnaur",
-    "Kullu",
-    "Lahaul &amp; Spiti",
-    "Mandi",
-    "Shimla",
-    "Sirmaur (Sirmour)",
-    "Solan",
-    "Una",
-  ],
-  "Jammu and Kashmir": [
-    "Anantnag",
-    "Bandipore",
-    "Baramulla",
-    "Budgam",
-    "Doda",
-    "Ganderbal",
-    "Jammu",
-    "Kathua",
-    "Kishtwar",
-    "Kulgam",
-    "Kupwara",
-    "Poonch",
-    "Pulwama",
-    "Rajauri",
-    "Ramban",
-    "Reasi",
-    "Samba",
-    "Shopian district",
-    "Srinagar",
-    "Udhampur",
-  ],
-  Jharkhand: [
-    "Bokaro",
-    "Chatra",
-    "Deoghar",
-    "Dhanbad",
-    "Dumka",
-    "East Singhbhum",
-    "Garhwa",
-    "Giridih",
-    "Godda",
-    "Gumla",
-    "Hazaribag",
-    "Jamtara",
-    "Khunti",
-    "Koderma",
-    "Latehar",
-    "Lohardaga",
-    "Pakur",
-    "Palamu",
-    "Ramgarh",
-    "Ranchi",
-    "Sahibganj",
-    "Seraikela-Kharsawan",
-    "Simdega",
-    "West Singhbhum",
-  ],
-  Karnataka: [
-    "Bagalkot",
-    "Ballari (Bellary)",
-    "Belagavi (Belgaum)",
-    "Bengaluru (Bangalore) Rural",
-    "Bengaluru (Bangalore) Urban",
-    "Bidar",
-    "Chamarajanagar",
-    "Chikballapur",
-    "Chikkamagaluru (Chikmagalur)",
-    "Chitradurga",
-    "Dakshina Kannada",
-    "Davanagere",
-    "Dharwad",
-    "Gadag",
-    "Hassan",
-    "Haveri",
-    "Kalaburagi (Gulbarga)",
-    "Kodagu",
-    "Kolar",
-    "Koppal",
-    "Mandya",
-    "Mysuru (Mysore)",
-    "Raichur",
-    "Ramanagara",
-    "Shivamogga (Shimoga)",
-    "Tumakuru (Tumkur)",
-    "Udupi",
-    "Uttara Kannada (Karwar)",
-    "Vijayapura (Bijapur)",
-    "Yadgir",
-  ],
-  Kerala: [
-    "Alappuzha",
-    "Ernakulam",
-    "Idukki",
-    "Kannur",
-    "Kasaragod",
-    "Kollam",
-    "Kottayam",
-    "Kozhikode",
-    "Malappuram",
-    "Palakkad",
-    "Pathanamthitta",
-    "Thiruvananthapuram",
-    "Thrissur",
-    "Wayanad",
-  ],
-  "Madhya Pradesh": [
-    "Agar Malwa",
-    "Alirajpur",
-    "Anuppur",
-    "Ashoknagar",
-    "Balaghat",
-    "Barwani",
-    "Betul",
-    "Bhind",
-    "Bhopal",
-    "Burhanpur",
-    "Chhatarpur",
-    "Chhindwara",
-    "Damoh",
-    "Datia",
-    "Dewas",
-    "Dhar",
-    "Dindori",
-    "Guna",
-    "Gwalior",
-    "Harda",
-    "Hoshangabad",
-    "Indore",
-    "Jabalpur",
-    "Jhabua",
-    "Katni",
-    "Khandwa",
-    "Khargone",
-    "Mandla",
-    "Mandsaur",
-    "Morena",
-    "Narsinghpur",
-    "Neemuch",
-    "Panna",
-    "Raisen",
-    "Rajgarh",
-    "Ratlam",
-    "Rewa",
-    "Sagar",
-    "Satna",
-    "Sehore",
-    "Seoni",
-    "Shahdol",
-    "Shajapur",
-    "Sheopur",
-    "Shivpuri",
-    "Sidhi",
-    "Singrauli",
-    "Tikamgarh",
-    "Ujjain",
-    "Umaria",
-    "Vidisha",
-  ],
-  Maharashtra: [
-    "Ahmednagar",
-    "Akola",
-    "Amravati",
-    "Aurangabad",
-    "Beed",
-    "Bhandara",
-    "Buldhana",
-    "Chandrapur",
-    "Dhule",
-    "Gadchiroli",
-    "Gondia",
-    "Hingoli",
-    "Jalgaon",
-    "Jalna",
-    "Kolhapur",
-    "Latur",
-    "Mumbai City",
-    "Mumbai Suburban",
-    "Nagpur",
-    "Nanded",
-    "Nandurbar",
-    "Nashik",
-    "Osmanabad",
-    "Palghar",
-    "Parbhani",
-    "Pune",
-    "Raigad",
-    "Ratnagiri",
-    "Sangli",
-    "Satara",
-    "Sindhudurg",
-    "Solapur",
-    "Thane",
-    "Wardha",
-    "Washim",
-    "Yavatmal",
-  ],
-  Manipur: [
-    "Bishnupur",
-    "Chandel",
-    "Churachandpur",
-    "Imphal East",
-    "Imphal West",
-    "Jiribam",
-    "Kakching",
-    "Kamjong",
-    "Kangpokpi",
-    "Noney",
-    "Pherzawl",
-    "Senapati",
-    "Tamenglong",
-    "Tengnoupal",
-    "Thoubal",
-    "Ukhrul",
-  ],
-  Meghalaya: [
-    "East Garo Hills",
-    "East Jaintia Hills",
-    "East Khasi Hills",
-    "North Garo Hills",
-    "Ri Bhoi",
-    "South Garo Hills",
-    "South West Garo Hills ",
-    "South West Khasi Hills",
-    "West Garo Hills",
-    "West Jaintia Hills",
-    "West Khasi Hills",
-  ],
-  Mizoram: [
-    "Aizawl",
-    "Champhai",
-    "Kolasib",
-    "Lawngtlai",
-    "Lunglei",
-    "Mamit",
-    "Saiha",
-    "Serchhip",
-  ],
-  Nagaland: [
-    "Dimapur",
-    "Kiphire",
-    "Kohima",
-    "Longleng",
-    "Mokokchung",
-    "Mon",
-    "Peren",
-    "Phek",
-    "Tuensang",
-    "Wokha",
-    "Zunheboto",
-  ],
-  Odisha: [
-    "Angul",
-    "Balangir",
-    "Balasore",
-    "Bargarh",
-    "Bhadrak",
-    "Boudh",
-    "Cuttack",
-    "Deogarh",
-    "Dhenkanal",
-    "Gajapati",
-    "Ganjam",
-    "Jagatsinghapur",
-    "Jajpur",
-    "Jharsuguda",
-    "Kalahandi",
-    "Kandhamal",
-    "Kendrapara",
-    "Kendujhar (Keonjhar)",
-    "Khordha",
-    "Koraput",
-    "Malkangiri",
-    "Mayurbhanj",
-    "Nabarangpur",
-    "Nayagarh",
-    "Nuapada",
-    "Puri",
-    "Rayagada",
-    "Sambalpur",
-    "Subarnapur (Sonepur)",
-    "Sundargarh",
-  ],
-};
 
-
-const data2= {
-  baniya: {
-    aggarwal: [
-      "goyal",
-      "bansal",
-      "kucchal",
-      "Kansal",
-      "Jindal",
-      "Mittal",
-      "Tayal",
-      "Bindal",
-      "Singhal",
-      "Garg",
-      "Gupta",
-    ],
-    maheswari: [
-      "Ajmera",
-      "Asava",
-      "Attal",
-      "Agiwal",
-      "Aagsuad",
-      "Baldua",
-      "Baaldi",
-      "Boob",
-      "Bangad",
-      "Bihani",
-      "Bidada",
-      "Baheti",
-      "Bajaj",
-      "Birla",
-      "Bang",
-      "Bhandari",
-      "Bhattad",
-      "Bhutada",
-    ],
-    khandelwal: [],
-    mahawar: [],
-  },
-};
 
 
 
@@ -489,22 +17,22 @@ const config = {
 };
 
 
-async function getNewToken() {
-  const headers = {
-    'api-token': 'WDfLEWHKHUf-cJUb8AEvPyLdLjT-ne-XckChlv60yyNq5Y4RfIlxMpBPRh3QFnFYotU',
-    'user-email': 'imta819@gmail.com',
-    'Accept': 'application/json',
-  };
+// async function getNewToken() {
+//   const headers = {
+//     'api-token': 'WDfLEWHKHUf-cJUb8AEvPyLdLjT-ne-XckChlv60yyNq5Y4RfIlxMpBPRh3QFnFYotU',
+//     'user-email': 'imta819@gmail.com',
+//     'Accept': 'application/json',
+//   };
 
-  try {
-    const response = await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', { headers });
-    config.headers.Authorization = `Bearer ${response.data.auth_token}`;
-  } catch (error) {
-    console.error('Failed to get new token:', error);
-  }
-}
+//   try {
+//     const response = await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', { headers });
+//     config.headers.Authorization = `Bearer ${response.data.auth_token}`;
+//   } catch (error) {
+//     console.error('Failed to get new token:', error);
+//   }
+// }
 
-setInterval(getNewToken, 20 * 60 * 60 * 1000);
+// setInterval(getNewToken, 20 * 60 * 60 * 1000);
 
 function MultiStepForm() {
   const [step, setStep] = useState(1);
@@ -594,35 +122,7 @@ function MultiStepForm() {
       image2: null,
       phoneNumber1: "",
     },
-    validationSchema: Yup.object({
-      gender: Yup.string().required("Gender is required"),
-      fullName: Yup.string().required("Full name is required"),
-      caste: Yup.string().required("Caste is required"),
-      subcaste: Yup.string().required("Subcaste is required"),
-      gotra: Yup.string().required("Gotra is required"),
-      dob: Yup.string().required("Date of birth is required"),
-      manglik: Yup.string().required("Manglik status is required"),
-      placeOfBirth: Yup.string().required("Place of birth is required"),
-      currentAddress: Yup.string().required("Current address is required"),
-      nativePlace: Yup.string().required("Native place is required"),
-      height: Yup.string().required("Height is required"),
-      complexion: Yup.string().required("Complexion is required"),
-      education: Yup.string().required("Education is required"),
-      occupation: Yup.string().required("Occupation is required"),
-      incomeBracket: Yup.string().required("Income bracket is required"),
-      maritalStatus: Yup.string().required("Marital status is required"),
-      pwd: Yup.string().required("PWD status is required"),
-      file: Yup.mixed().required("File upload is required"),
-      phoneNumber1: Yup.string()
-        .required("Phone number is required")
-        .matches(/^[0-9]{10}$/, "Invalid phone number"),
-      phoneNumber2: Yup.string()
-        .required("Phone number is required")
-        .matches(/^[0-9]{10}$/, "Invalid phone number"),
-      email: Yup.string()
-        .required("Email is required")
-        .email("Invalid email address"),
-    }),
+
     onSubmit: async (values) => {
       const formData = new FormData();
 
@@ -671,9 +171,7 @@ function MultiStepForm() {
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
-          {formik.errors.gender && formik.touched.gender && (
-            <div>{formik.errors.gender}</div>
-          )}
+
         </div>
       )}
       {step === 2 && (
@@ -686,9 +184,7 @@ function MultiStepForm() {
             onChange={formik.handleChange}
             value={formik.values.fullName}
           />
-          {formik.errors.fullName && formik.touched.fullName && (
-            <div>{formik.errors.fullName}</div>
-          )}
+
 
           {step === 2 && (
             <div>
@@ -709,9 +205,7 @@ function MultiStepForm() {
                   </option>
                 ))}
               </select>
-              {formik.errors.caste && formik.touched.caste && (
-                <div>{formik.errors.caste}</div>
-              )}
+
 
               <label htmlFor="subcaste">Subcaste:</label>
               <select
@@ -730,9 +224,6 @@ function MultiStepForm() {
                   </option>
                 ))}
               </select>
-              {formik.errors.subcaste && formik.touched.subcaste && (
-                <div>{formik.errors.subcaste}</div>
-              )}
 
               <label htmlFor="gotra">Gotra:</label>
               <select
@@ -751,9 +242,7 @@ function MultiStepForm() {
                   </option>
                 ))}
               </select>
-              {formik.errors.gotra && formik.touched.gotra && (
-                <div>{formik.errors.gotra}</div>
-              )}
+
             </div>
           )}
 
@@ -803,9 +292,7 @@ function MultiStepForm() {
             />
             <label htmlFor="manglik-anshik">Anshik</label>
           </div>
-          {formik.errors.manglik && formik.touched.manglik && (
-            <div>{formik.errors.manglik}</div>
-          )}
+
         </div>
       )}
       {step === 3 && (
@@ -818,9 +305,7 @@ function MultiStepForm() {
             onChange={formik.handleChange}
             value={formik.values.placeOfBirth}
           />
-          {formik.errors.placeOfBirth && formik.touched.placeOfBirth && (
-            <div>{formik.errors.placeOfBirth}</div>
-          )}
+
           <label htmlFor="currentAddress">Current Address:</label>
           <input
             id="currentAddress"
@@ -829,9 +314,7 @@ function MultiStepForm() {
             onChange={formik.handleChange}
             value={formik.values.currentAddress}
           />
-          {formik.errors.currentAddress && formik.touched.currentAddress && (
-            <div>{formik.errors.currentAddress}</div>
-          )}
+
           <label htmlFor="location">Address:</label>
           <select
             id="location"
@@ -845,9 +328,7 @@ function MultiStepForm() {
             <option value="india">India</option>
             <option value="abroad">Abroad</option>
           </select>
-          {formik.errors.location && formik.touched.location && (
-            <div>{formik.errors.location}</div>
-          )}
+
 
           {location === "abroad" && (
             <>
@@ -870,10 +351,7 @@ function MultiStepForm() {
                   </option>
                 ))}
               </select>
-              {formik.errors.country && formik.touched.country && (
-                <div>{formik.errors.country}</div>
-              )
-              }
+
 
               <label htmlFor="state">State:</label>
               <select
@@ -891,9 +369,7 @@ function MultiStepForm() {
                   </option>
                 ))}
               </select>
-              {formik.errors.state && formik.touched.state && (
-                <div>{formik.errors.state}</div>
-              )}
+
 
               <label htmlFor="city">City:</label>
               <select
@@ -911,9 +387,7 @@ function MultiStepForm() {
                   </option>
                 ))}
               </select>
-              {formik.errors.city && formik.touched.city && (
-                <div>{formik.errors.city}</div>
-              )}
+
             </>
           )}
 
@@ -935,9 +409,7 @@ function MultiStepForm() {
                   </option>
                 ))}
               </select>
-              {formik.errors.state && formik.touched.state && (
-                <div>{formik.errors.state}</div>
-              )}
+
               <label htmlFor="district">City</label>
               <select
                 id="city"
@@ -955,9 +427,7 @@ function MultiStepForm() {
                     </option>
                   ))}
               </select>
-              {formik.errors.city && formik.touched.city && (
-                <div>{formik.errors.city}</div>
-              )}
+
             </>
           )}
         </div>
@@ -972,9 +442,7 @@ function MultiStepForm() {
             onChange={formik.handleChange}
             value={formik.values.heightFeet}
           />
-          {formik.errors.heightFeet && formik.touched.heightFeet && (
-            <div>{formik.errors.heightFeet}</div>
-          )}
+
           <label htmlFor="complexion">Complexion:</label>
           <select
             id="complexion"
@@ -987,32 +455,117 @@ function MultiStepForm() {
             <option value="medium">Medium</option>
             <option value="dark">Dark</option>
           </select>
-          {formik.errors.complexion && formik.touched.complexion && (
-            <div>{formik.errors.complexion}</div>
-          )}
+
           <label htmlFor="education">Education:</label>
-          <input
+          <select
             id="education"
             name="education"
-            type="text"
             onChange={formik.handleChange}
             value={formik.values.education}
-          />
-          {formik.errors.education && formik.touched.education && (
-            <div>{formik.errors.education}</div>
+          >
+            <option value="">Select Education</option>
+            <option value="Under Graduate">Under Graduate</option>
+            <option value="Graduate">Graduate</option>
+            <option value="Post Graduate">Post Graduate</option>
+            <option value="Professional">Professional</option>
+            <option value="Other">Other</option>
+          </select>
+
+          {formik.values.education === "Professional" && (
+            <div>
+              <label htmlFor="profession">Profession:</label>
+              <select
+                id="profession"
+                name="profession"
+                onChange={formik.handleChange}
+                value={formik.values.profession}
+              >
+                <option value="">Select Profession</option>
+                <option value="Engineer">Engineer</option>
+                <option value="Doctor">Doctor</option>
+                <option value="CA">CA</option>
+                <option value="Advocate">Advocate</option>
+                <option value="Other">Other</option>
+              </select>
+              {formik.values.profession === "Other" && (
+                <input
+                  id="otherProfession"
+                  name="otherProfession"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.otherProfession}
+                />
+              )}
+            </div>
           )}
+          {formik.values.education === "Other" && (
+            <input
+              id="otherEducation"
+              name="otherEducation"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.otherEducation}
+            />
+          )}
+
+
           <label htmlFor="occupation">Occupation:</label>
-          <input
+          <select
             id="occupation"
             name="occupation"
-            type="text"
             onChange={formik.handleChange}
             value={formik.values.occupation}
-          />
-          {formik.errors.occupation && formik.touched.occupation && (
-            <div>{formik.errors.occupation}</div>
-
+          >
+            <option value="">Select Occupation</option>
+            <option value="Service">Service</option>
+            <option value="Business">Business</option>
+            <option value="Self Employed">Self Employed</option>
+          </select>
+          
+          {formik.values.occupation === "Service" && (
+            <div>
+              <label htmlFor="serviceType">Service Type:</label>
+              <select
+                id="serviceType"
+                name="serviceType"
+                onChange={formik.handleChange}
+                value={formik.values.serviceType}
+              >
+                <option value="">Select Service Type</option>
+                <option value="Government">Government</option>
+                <option value="Private">Private</option>
+              </select>
+              {formik.values.serviceType && (
+                <input
+                  id="serviceDetails"
+                  name="serviceDetails"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.serviceDetails}
+                />
+              )}
+            </div>
           )}
+          {formik.values.occupation === "Business" && (
+            <input
+              id="businessDetails"
+              name="businessDetails"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.businessDetails}
+            />
+          )}
+          {formik.values.occupation === "Self Employed" && (
+            <input
+              id="selfEmployedDetails"
+              name="selfEmployedDetails"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.selfEmployedDetails}
+            />
+          )}
+
+
           <label htmlFor="incomeBracket">Income Bracket:</label>
           <select
             id="incomeBracket"
