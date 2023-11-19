@@ -44,13 +44,13 @@ function MultiStepFilterForm() {
             }
             try {
                 const response = await fetch(
-                    "http://localhost:3000/postBiodataFilters",
+                    `http://localhost:3000/getBioDataByFilters?gender=${values.gender}&height=${values.height}&age=${values.age}&manglik=${values.manglik}&caste=${values.caste}&subcaste=${values.subcaste}&gotra=${values.gotra}`,
                     {
-                        method: "POST",
-                        body: formData,
+                        method: "GET",
                     }
                 );
                 const data = await response.json();
+                console.log('hi');
                 console.log(data);
             } catch (error) {
                 console.error(error);
