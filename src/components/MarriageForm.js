@@ -5,9 +5,6 @@ import axios from "axios";
 import bioData from '../utils/biodata';
 import indiaStates from '../utils/indiaStates';
 
-
-
-
 const config = {
   headers: {
     Authorization:
