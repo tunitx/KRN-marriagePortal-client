@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Select from 'react-select';
 import { useFormik } from "formik";
 import bioData from '../utils/biodata';
 
@@ -16,7 +17,8 @@ function MultiStepFilterForm() {
     const [step, setStep] = useState(1);
     const [caste, setCaste] = useState("");
     const [subcaste, setSubcaste] = useState("");
-    const [gotra, setGotra] = useState("");
+    // const [gotra, setGotra] = useState("");
+    const [excludedGotras, setExcludedGotras] = useState([]);
     const [height, setHeight] = useState("");
     const castes = Object.keys(bioData);
     const subcastes = caste ? Object.keys(bioData[caste]) : [];
@@ -27,7 +29,7 @@ function MultiStepFilterForm() {
             gender: "",
             caste: caste,
             subcaste: subcaste,
-            gotra: gotra,
+            gotra: [],
             manglik: "",
             height: height,
             age: "",
@@ -37,7 +39,13 @@ function MultiStepFilterForm() {
             const formData = new FormData();
 
             for (const key in values) {
-                formData.append(key, values[key]);
+                if (key === 'gotra') {
+                    const includedGotras = gotras.filter(g => !values.gotra.includes(g));
+                    formData.append(key, includedGotras);
+                } else {
+                    formData.append(key, values[key]);
+                }
+                // formData.append(key, values[key]);
             }
             for (let pair of formData.entries()) {
                 console.log(pair[0] + ", " + pair[1]);
@@ -125,26 +133,25 @@ function MultiStepFilterForm() {
                             </option>
                         ))}
                     </select>
-
-                    <label htmlFor="gotra">Gotra:</label>
-                    <select
+                    <label htmlFor="gotra">Exclude Gotras:</label>
+                    <Select
                         id="gotra"
                         name="gotra"
-                        onChange={(e) => {
-                            setGotra(e.target.value);
-                            formik.setFieldValue("gotra", e.target.value);
-                        }}
-                        value={gotra}
-                    >
-                        <option value="">Select gotra</option>
-                        <option value="none">None</option>
-                        {gotras.map((g) => (
-                            <option key={g} value={g}>
-                                {g}
-                            </option>
-                        ))}
-                    </select>
+                        isMulti
+                        options={[{ value: 'none', label: 'Exclude None' }, ...gotras.map(g => ({ value: g, label: g }))]}
 
+                        onChange={(selectedOptions) => {
+                            const selectedGotras = selectedOptions.map(option => option.value);
+                            if (selectedGotras.includes('none')) {
+                                setExcludedGotras(['none']);
+                                formik.setFieldValue("gotra", []);
+                            } else {
+                                setExcludedGotras(selectedGotras);
+                                formik.setFieldValue("gotra", selectedGotras);
+                            }
+                        }}
+                        value={excludedGotras.map(g => ({ value: g, label: g === 'none' ? 'Exclude None' : g }))}
+                    />
                 </div>
             )}
             {step === 3 && (
