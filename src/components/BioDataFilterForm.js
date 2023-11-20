@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import Select from 'react-select';
 import { useFormik } from "formik";
 import bioData from '../utils/biodata';
-
+import ReactSlider from 'react-slider';
+import './BioDataFilterForm.css';
+import { Slider } from '@mui/material';
 
 const heights = [
     'Less than 4 fts.',
@@ -15,6 +17,7 @@ const heights = [
 ];
 function MultiStepFilterForm() {
     const [step, setStep] = useState(1);
+    const [ageRange, setAgeRange] = useState([{ min: 18, max: 100 }]);
     const [caste, setCaste] = useState("");
     const [subcaste, setSubcaste] = useState("");
     // const [gotra, setGotra] = useState("");
@@ -33,26 +36,37 @@ function MultiStepFilterForm() {
             manglik: "",
             height: height,
             age: "",
+            ageRange: ageRange
         },
+
+
 
         onSubmit: async (values) => {
             const formData = new FormData();
 
             for (const key in values) {
-                if (key === 'gotra') {
-                    const includedGotras = gotras.filter(g => !values.gotra.includes(g));
+                if (key === 'ageRange') {
+                    formData.append(key, JSON.stringify(values[key]));
+                } else if (key === 'gotra') {
+                    const includedGotras = gotras.filter(g => values.gotra.includes(g));
                     formData.append(key, includedGotras);
                 } else {
                     formData.append(key, values[key]);
                 }
-                // formData.append(key, values[key]);
             }
             for (let pair of formData.entries()) {
-                console.log(pair[0] + ", " + pair[1]);
+                if (pair[0] === 'ageRange') {
+                    const ageRangeObject = JSON.parse(pair[1]);
+                    console.log(ageRangeObject);
+                } else {
+                    console.log(pair[0] + ", " + pair[1]);
+                }
             }
+
+
             try {
                 const response = await fetch(
-                    `http://localhost:3000/getBioDataByFilters?gender=${values.gender}&height=${values.height}&age=${values.age}&manglik=${values.manglik}&caste=${values.caste}&subcaste=${values.subcaste}&gotra=${values.gotra}`,
+                    `http://localhost:3000/getBioDataByFilters?gender=${values.gender}&height=${values.height}&ageRange=${JSON.stringify(values.ageRange)}&manglik=${values.manglik}&caste=${values.caste}&subcaste=${values.subcaste}&gotra=${values.gotra}`,
                     {
                         method: "GET",
                     }
@@ -187,16 +201,22 @@ function MultiStepFilterForm() {
                             </option>
                         ))}
                     </select>
-
-                    <label htmlFor="age">Age</label>
-                    <input
-                        id="age"
-                        name="age"
-                        type="number"
-                        onChange={formik.handleChange}
-                        value={formik.values.age}
-                    ></input>
-
+                    
+                    <label htmlFor="ageRange">Age Range</label>
+                    <Slider
+                        style={{ width: '20%', position: 'relative', top: '12px', left: '30px' }}
+                        getAriaLabel={() => 'Age Range'}
+                        onChange={(event, newValue) => {
+                            const newAgeRange = { min: newValue[0], max: newValue[1] };
+                            formik.setFieldValue('ageRange', newAgeRange);
+                            setAgeRange(newAgeRange);
+                        }}
+                        value={[ageRange.min, ageRange.max]}
+                        min={18}
+                        max={100}
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={(value, index) => index === 0 ? `Min Age: ${value}` : `Max Age: ${value}`}
+                    />
                 </div>
             )}
 
